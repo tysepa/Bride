@@ -1,117 +1,256 @@
-/* GENERAL */
-body{
-    margin:0;
-    font-family:Poppins, sans-serif;
-    background:linear-gradient(
-        rgba(255, 255, 255, 0.241),
-        rgba(255, 255, 255, 0.426)
-    ),
-    url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc");
-    background-size:cover;
-    background-attachment:fixed;
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
 }
 
 /* HEADER */
-header{
-    background:#d63384;
-    color:white;
-    text-align:center;
-    padding:25px;
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#111;
+color:white;
+padding:15px 120px;
+position:sticky;
+top:0;
+z-index:1000;
 }
 
-/* NAVIGATION */
+.logo{
+font-size:22px;
+}
+
 nav{
-    background:#222;
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
+display:flex;
+gap:20px;
 }
 
 nav a{
-    color:white;
-    text-decoration:none;
-    padding:15px 25px;
+color:white;
+text-decoration:none;
+font-weight:500;
 }
 
 nav a:hover{
-    background:#d63384;
+color:#f4c542;
+}
+
+.menu-toggle{
+display:none;
+font-size:28px;
+cursor:pointer;
+}
+
+/* HERO */
+.hero{
+height:60vh;
+background:url("./../Assets/bife.jpg") center/cover;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+color:white;
+text-align:center;
 }
 
 /* CONTAINER */
 .container{
-    max-width:1200px;
-    margin:auto;
-    padding:40px;
+width:90%;
+margin:auto;
+padding:40px 0;
 }
 
 /* GALLERY GRID */
 .gallery{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:25px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
 }
 
-/* CARD */
-.card{
-    background:white;
-    border-radius:12px;
-    overflow:hidden;
-    box-shadow:0 10px 25px rgba(0,0,0,0.15);
-    text-align:center;
-    transition:0.4s;
+/* GALLERY ITEM */
+.gallery-item{
+overflow:hidden;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.2);
+cursor:pointer;
 }
 
-.card:hover{
-    transform:translateY(-8px);
+.gallery-item img{
+width:100%;
+height:300px;
+object-fit:cover;
+transition:0.5s;
 }
 
-/* IMAGE */
-.card img{
-    width:100%;
-    height:350px;
-    object-fit:cover;
+.gallery-item:hover img{
+transform:scale(1.1);
 }
 
-/* BUTTON */
-.card button{
-    margin:15px;
-    padding:10px 20px;
-    border:none;
-    background:#d63384;
-    color:white;
-    border-radius:6px;
-    cursor:pointer;
+/* LIGHTBOX */
+#lightbox{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+justify-content:center;
+align-items:center;
+flex-direction:column;
 }
 
-.card button:hover{
-    background:#a61e5c;
+#lightbox img{
+max-width:90%;
+max-height:80%;
+border-radius:10px;
 }
 
+#lightbox span{
+color:white;
+font-size:30px;
+cursor:pointer;
+margin-bottom:20px;
+}
+/* CTA */
+.cta{
+background:#333;
+color:white;
+text-align:center;
+padding:70px 20px;
+
+}
+
+/* CTA SECTION */
+.cta{
+background:#333;
+color:white;
+text-align:center;
+padding:70px 20px;
+}
+
+/* BOOK BUTTON */
+.book-btn{
+margin-top:20px;
+padding:12px 25px;
+background:#f4c542;
+border:none;
+font-size:16px;
+font-weight:bold;
+border-radius:30px;
+cursor:pointer;
+transition:0.4s;
+}
+
+.book-btn:hover{
+background:#ffd95a;
+transform:scale(1.05);
+}
+
+/* SOCIAL MEDIA */
+.social-media{
+margin-top:30px;
+display:flex;
+justify-content:center;
+gap:25px;
+}
+
+/* ICON STYLE */
+.social{
+width:55px;
+height:55px;
+background:#f4c542;
+color:#111;
+display:flex;
+justify-content:center;
+align-items:center;
+border-radius:50%;
+font-size:22px;
+text-decoration:none;
+transition:0.4s;
+animation:float 3s ease-in-out infinite;
+}
+
+/* HOVER EFFECT */
+.social:hover{
+background:white;
+transform:translateY(-8px) scale(1.1);
+box-shadow:0 10px 20px rgba(244,197,66,0.6);
+}
+
+/* FLOAT ANIMATION */
+@keyframes float{
+0%{transform:translateY(0);}
+50%{transform:translateY(-6px);}
+100%{transform:translateY(0);}
+}
+
+/* DIFFERENT DELAYS */
+.instagram{animation-delay:0s;}
+.tiktok{animation-delay:0.3s;}
+.facebook{animation-delay:0.6s;}
+
+.cta button{
+margin-top:20px;
+padding:12px 25px;
+border:none;
+background:#c59d5f;
+cursor:pointer;
+font-size:16px;
+}
+/* ANIMATION */
+.fade{
+opacity:0;
+transform:translateY(50px);
+transition:0.8s;
+}
+
+.fade.show{
+opacity:1;
+transform:translateY(0);
+}
 /* FOOTER */
 footer{
-    background:#222;
-    color:white;
-    text-align:center;
-    padding:20px;
-    margin-top:40px;
+background:#111;
+color:white;
+text-align:center;
+padding:20px;
+
 }
 
-/* RESPONSIVE */
-
-/* Tablet */
+/* ================= MOBILE ================= */
 @media(max-width:768px){
-    .container{
-        padding:20px;
+    .header{
+        padding:15px 20px;
     }
+
+nav{
+display:none;
+flex-direction:column;
+background:#111;
+position:absolute;
+top:70px;
+right:0;
+width:100%;
+text-align:center;
 }
 
-/* Mobile */
-@media(max-width:480px){
-    nav{
-        flex-direction:column;
-    }
+nav.active{
+display:flex;
+}
 
-    .card img{
-        height:250px;
-    }
+.menu-toggle{
+display:block;
+}
+
+.hero{
+height:30vh;
+}
+
+.gallery-item img{
+height:220px;
+}
 }

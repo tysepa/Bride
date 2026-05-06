@@ -7,35 +7,166 @@
 <title>Wedding Gallery</title>
 
 <link rel="stylesheet" href="./Css/gallery.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
 
-<header>
-<h1>Wedding Gallery</h1>
-</header>
+<!-- ================= HEADER ================= -->
+<header class="header">
 
-<nav>
+<h1 class="logo">Bridal Belle Boutique</h1>
+
+<nav id="navMenu">
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
 <a href="gallery.html">Gallery</a>
+<a href="blog.html">Blog</a>
 <a href="contact.html">Contact</a>
 </nav>
 
+<div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+<h2>Our Bridal Collection</h2>
+<p>Discover Elegant Wedding Moments</p>
+</section>
+
+<!-- ================= GALLERY ================= -->
 <div class="container">
 
-<h2>Our Bridal Collection</h2>
+<div class="gallery" id="gallery">
 
-<!-- Gallery Images will load here -->
-<div class="gallery" id="gallery"></div>
+<!-- SAMPLE IMAGES -->
+<div class="gallery-item">
+<img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf">
+</div>
+
+<div class="gallery-item">
+<img src="https://images.unsplash.com/photo-1519741497674-611481863552">
+</div>
+
+<div class="gallery-item">
+<img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91">
+</div>
+
+<div class="gallery-item">
+<img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc">
+</div>
+
+<div class="gallery-item">
+<img src="https://images.unsplash.com/photo-1529636798458-92182e662485">
+</div>
+
+<div class="gallery-item">
+<img src="./Assets/food.jpg">
+</div>
+<div class="gallery-item">
+<img src="./Assets/food.jpg">
+</div>
+<div class="gallery-item">
+<img src="./Assets/mandapam_imag1.jpg">
+</div>
+<div class="gallery-item">
+<img src="./Assets/place.jpg">
+</div>
+<div class="gallery-item">
+<img src="./Assets/Decoration.jpg">
+</div>
+<div class="gallery-item">
+<img src="./Assets/img2.jpg">
+</div>
+<div class="gallery-item">
+<img src="./Assets/grooms.jpg">
+</div>
+<div class="gallery-item">
+<img src="./Assets/dressing.jpeg">
+</div>
+<div class="gallery-item">
+<img src="./Assets/car.jpg">
+</div>
 
 </div>
 
+</div>
+
+<!-- ================= LIGHTBOX ================= -->
+<div id="lightbox">
+<span onclick="closeLightbox()">✖</span>
+<img id="lightbox-img">
+</div>
+
+<!-- ================= FOOTER ================= -->
+<section class="cta fade">
+
+<h2>Your Dream Wedding Starts With Us 💍</h2>
+
+<button onclick="bookNow()" class="book-btn">
+Book Consultation
+</button>
+
+<!-- SOCIAL MEDIA -->
+<div class="social-media">
+
+<a href="#" class="social instagram" target="_blank">
+<i class="fab fa-instagram"></i>
+</a>
+
+<a href="#" class="social tiktok" target="_blank">
+<i class="fab fa-tiktok"></i>
+</a>
+
+<a href="#" class="social facebook" target="_blank">
+<i class="fab fa-facebook-f"></i>
+</a>
+
+</div>
+
+</section>
 <footer>
 <p>© 2026 Wedding Wear Rental</p>
 </footer>
 
-<script src="./Js/gallery.js"></script>
+<script>
+function toggleMenu(){
+ document.getElementById("navMenu").classList.toggle("active");
+}
+
+/* IMAGE LIGHTBOX */
+const images=document.querySelectorAll(".gallery-item img");
+const lightbox=document.getElementById("lightbox");
+const lightboxImg=document.getElementById("lightbox-img");
+
+images.forEach(img=>{
+ img.onclick=()=>{
+   lightbox.style.display="flex";
+   lightboxImg.src=img.src;
+ }
+});
+
+function closeLightbox(){
+ lightbox.style.display="none";
+
+}
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("show");
+}
+});
+});
+
+document.querySelectorAll(".fade")
+.forEach(el=>observer.observe(el));
+
+function bookNow(){
+    window.location.href = "booking.html";
+}
+</script>
 
 </body>
 </html>

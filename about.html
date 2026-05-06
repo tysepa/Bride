@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,87 +8,131 @@
 
 <title>About Us</title>
 
-<link rel="stylesheet" href="./Css/style.css">
+<link rel="stylesheet" href="./Css/about.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </head>
 
 <body>
 
-<header>
-<h1>About Our Wedding Rental</h1>
-</header>
+<!-- ================= NAVBAR ================= -->
+<header class="header">
 
-<nav>
+<h1 class="logo">Bridal Belle Boutique</h1>
+
+<nav id="navMenu">
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
 <a href="gallery.html">Gallery</a>
+<a href="blog.html">Blog</a>
 <a href="contact.html">Contact</a>
 </nav>
 
-<!-- ABOUT INTRO -->
+<div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+<h2 class="fade">About Our Wedding Boutique</h2>
+<p class="fade">Creating unforgettable wedding memories</p>
+</section>
+
+<!-- ================= ABOUT ================= -->
 <section class="about-section">
 
-<div class="about-text">
+<div class="about-text fade">
 <h2>Who We Are</h2>
 
 <p>
 We specialize in luxury wedding wear rentals for brides and grooms.
-Our goal is to make every wedding ceremony elegant, memorable,
-and affordable for every couple.
+Our mission is to make every wedding ceremony elegant,
+memorable and affordable.
 </p>
 
 <p>
 From modern bridal gowns to traditional ceremony outfits,
-we provide complete wedding styling and fitting services.
+we provide full wedding styling and fitting services.
 </p>
 
 </div>
 
-<div class="about-image">
+<div class="about-image fade">
 <img src="https://images.unsplash.com/photo-1519741497674-611481863552">
 </div>
 
 </section>
 
+<!-- ================= BRIDE SHOWCASE ================= -->
+<section class="bride-showcase">
 
-<!-- ADVERTISEMENT SECTION -->
-<section class="advert-section">
+<h2 class="fade">Beautiful Bride Moments</h2>
 
-<h2>Celebrate Your Perfect Wedding Ceremony</h2>
+<div class="bride-gallery">
 
-<div class="advert-gallery">
-
-<div class="advert-card">
-<img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf">
-<h3>Elegant Bride Style</h3>
-</div>
-
-<div class="advert-card">
-<img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91">
-<h3>Luxury Groom Suit</h3>
-</div>
-
-<div class="advert-card">
-<img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc">
-<h3>Romantic Wedding Ceremony</h3>
-</div>
+<img class="zoom fade" src="https://images.unsplash.com/photo-1520854221256-17451cc331bf">
+<img class="zoom fade" src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91">
+<img class="zoom fade" src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc">
 
 </div>
 
 </section>
 
+<!-- ================= CTA ================= -->
+<section class="cta fade">
 
-<!-- CALL TO ACTION -->
-<section class="cta">
 <h2>Your Dream Wedding Starts With Us 💍</h2>
-<button onclick="bookNow()">Book Consultation</button>
+
+<button onclick="bookNow()" class="book-btn">
+Book Consultation
+</button>
+
+<!-- SOCIAL MEDIA -->
+<div class="social-media">
+
+<a href="#" class="social instagram" target="_blank">
+<i class="fab fa-instagram"></i>
+</a>
+
+<a href="#" class="social tiktok" target="_blank">
+<i class="fab fa-tiktok"></i>
+</a>
+
+<a href="#" class="social facebook" target="_blank">
+<i class="fab fa-facebook-f"></i>
+</a>
+
+</div>
+
 </section>
 
 <footer>
 <p>© 2026 Wedding Wear Rental</p>
 </footer>
 
-<script src="./Js/script.js"></script>
+<script>
+
+function toggleMenu(){
+document.getElementById("navMenu").classList.toggle("active");
+}
+
+/* SCROLL ANIMATION */
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("show");
+}
+});
+});
+
+document.querySelectorAll(".fade")
+.forEach(el=>observer.observe(el));
+function bookNow(){
+    window.location.href = "booking.html";
+}
+
+</script>
 
 </body>
 </html>

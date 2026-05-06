@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Wedding Booking</title>
+
+<link rel="stylesheet" href="./Css/booking.css">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<header class="header">
+
+<h1 class="logo">Bridal Belle Boutique</h1>
+
+<nav id="navMenu">
+<a href="index.html">Home</a>
+<a href="gallery.html">Gallery</a>
+<a href="blog.html">Blog</a>
+<a href="contact.html">Contact</a>
+</nav>
+
+<div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+<h2>Book Your Dream Wedding</h2>
+<p>Select all materials for your perfect ceremony</p>
+</section>
+
+<!-- ================= BOOKING FORM ================= -->
+<section class="booking-container">
+
+<form class="booking-form">
+
+<h2>Wedding Booking Form</h2>
+
+<input type="text" placeholder="Full Name" required>
+<input type="email" placeholder="Email Address" required>
+<input type="tel" placeholder="Phone Number" required>
+
+<label>Wedding Date</label>
+<input type="date" required>
+
+<label>Select Wedding Materials</label>
+
+<div class="materials">
+
+<label><input type="checkbox" value="500"> Bridal Dress ($500)</label>
+<label><input type="checkbox" value="400"> Groom Suit ($400)</label>
+<label><input type="checkbox" value="700"> Decoration Package ($700)</label>
+<label><input type="checkbox" value="600"> Wedding Car ($600)</label>
+<label><input type="checkbox" value="900"> Photography & Video ($900)</label>
+<label><input type="checkbox" value="300"> Makeup Service ($300)</label>
+
+</div>
+
+<h3>Total Price: $<span id="total">0</span></h3>
+
+<textarea placeholder="Additional Requests"></textarea>
+
+<button type="submit">Confirm Booking</button>
+
+</form>
+
+</section>
+
+<footer>
+<p>© 2026 Wedding Wear Rental</p>
+</footer>
+
+<script src="./Js/booking.js"></script>
+
+</body>
+</html>

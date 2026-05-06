@@ -1,0 +1,136 @@
+/* RESET */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+/* NAVBAR */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#111;
+color:white;
+padding:15px 120px;
+position:sticky;
+top:0;
+}
+
+nav{
+display:flex;
+gap:20px;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+}
+.booking-form h2{
+      color: #d2a528;
+}
+
+.menu-toggle{
+display:none;
+font-size:28px;
+cursor:pointer;
+}
+
+/* HERO */
+.hero{
+height:65vh;
+background:url("./../Assets/wedding-banner-image.jpg") center/cover;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+color:rgb(143, 5, 161);
+text-align:center;
+}
+
+/* BOOKING FORM */
+.booking-container{
+padding:60px 10%;
+display:flex;
+justify-content:center;
+}
+
+.booking-form{
+background:#fff;
+padding:40px;
+width:100%;
+max-width:700px;
+border-radius:12px;
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+.booking-form input,
+.booking-form textarea{
+width:100%;
+margin:10px 0;
+padding:12px;
+border:1px solid #ccc;
+border-radius:6px;
+}
+
+.materials{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin:20px 0;
+}
+
+.booking-form button{
+background:#111;
+color:white;
+padding:12px;
+border:none;
+cursor:pointer;
+width:100%;
+}
+
+.booking-form button:hover{
+background:#f4c542;
+color:black;
+}
+
+/* FOOTER */
+footer{
+background:#111;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    .header{
+        padding: 15px 20px;
+    }
+
+nav{
+display:none;
+flex-direction:column;
+background:#111;
+position:absolute;
+top:70px;
+right:0;
+width:100%;
+text-align:center;
+}
+
+nav.active{
+display:flex;
+}
+
+.menu-toggle{
+display:block;
+}
+
+.materials{
+grid-template-columns:1fr;
+}
+
+}

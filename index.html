@@ -1,86 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog - Bridal Belle Boutique</title>
-  <link rel="stylesheet" href="./Css/style.css">
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Blog - Bridal Belle Boutique</title>
+
+<link rel="stylesheet" href="./Css/style.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
 
 <body>
 
-<header>
-<h1>Bridal Belle boutique</h1>
-</header>
+<!-- ================= NAVBAR ================= -->
+<header class="header">
 
-<nav>
+<h1 class="logo">Bridal Belle Boutique</h1>
+
+<nav id="navMenu">
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
 <a href="gallery.html">Gallery</a>
-<a href="contact.html">Contact</a>
 <a href="blog.html">Blog</a>
+<a href="contact.html">Contact</a>
 </nav>
 
-<!-- HERO SECTION -->
+<div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+</header>
+
+<!-- ================= HERO ================= -->
 <section class="hero">
+
+<div class="hero-slider">
+
+<div class="slide active"></div>
+<div class="slide"></div>
+<div class="slide"></div>
+
+</div>
+
 <div class="hero-content">
 <h2>Luxury Bride & Groom Wedding Ceremony</h2>
 <p>The Best Style For Your Special Day</p>
-<button onclick="showMessage()">Book Now</button>
+<button onclick="bookNow()">Book Now</button>
 </div>
+
 </section>
 
-<!-- SERVICES -->
-<div class="container">
+<!-- ================= SERVICES ================= -->
+<section class="container">
+
 <h2>Our Wedding Services</h2>
 
 <div class="services">
 
 <div class="service">
-<img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf">
+<img src="./Assets/dressing.jpeg">
 <h3>Bridal Dresses</h3>
 </div>
 
 <div class="service">
-<img src="https://images.unsplash.com/photo-1519741497674-611481863552">
+<img src="./Assets/grooms.jpg">
 <h3>Groom Suits</h3>
 </div>
 
 <div class="service">
-<img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91">
+<img src="./Assets/mandapam_imag1.jpg">
 <h3>Wedding Decoration</h3>
 </div>
 
 </div>
-</div>
+</section>
 
-<!-- WEDDING CAR SECTION -->
+<!-- ================= CAR SECTION ================= -->
 <section class="car-section">
 <h2>Luxury Wedding Cars</h2>
 
-<img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70" class="car">
+<img src="./Assets/car.jpg" class="car">
 
 <p>Arrive in Style with Our Premium Wedding Cars</p>
 </section>
 
-<!-- VIDEO SECTION -->
+<!-- ================= VIDEO ================= -->
 <section class="video-section">
 
 <h2>Wedding Ceremony Experience</h2>
 
-<video controls autoplay muted loop>
-<source src="https://unsplash.com/photos/man-in-black-t-shirt-holding-black-dslr-camera-CxoEeNkJwUA" type="video/mp4">
+<video controls muted loop>
+<source src="./Assets/1video.mp4" type="video/mp4">
 </video>
 
 </section>
 
+<!-- ================= FOOTER ================= -->
+<section class="cta fade">
 
+<h2>Your Dream Wedding Starts With Us 💍</h2>
+
+<button onclick="bookNow()" class="book-btn">
+Book Consultation
+</button>
+
+<!-- SOCIAL MEDIA -->
+<div class="social-media">
+
+<a href="#" class="social instagram" target="_blank">
+<i class="fab fa-instagram"></i>
+</a>
+
+<a href="#" class="social tiktok" target="_blank">
+<i class="fab fa-tiktok"></i>
+</a>
+
+<a href="#" class="social facebook" target="_blank">
+<i class="fab fa-facebook-f"></i>
+</a>
+
+<!-- ADMIN LOGIN ICON -->
+<a href="./Admin/admin.html" class="admin-float">
+<i class="fas fa-user-shield"></i>
+</a>
+
+</div>
+
+</section>
 <footer>
-<p>© 2026 Wedding Wear Rental</p>
+<p>© 2026 Bridal Belle Boutique & Copy Light by Tys Teck</p>
 </footer>
 
-<script src="./Js/script.js"></script>
+<script>
+function toggleMenu(){
+ document.getElementById("navMenu").classList.toggle("active");
+}
+
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function changeSlide(){
+
+slides[index].classList.remove("active");
+
+index = (index + 1) % slides.length;
+
+slides[index].classList.add("active");
+
+}
+
+setInterval(changeSlide,4000);
+
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("show");
+}
+});
+});
+
+document.querySelectorAll(".fade")
+.forEach(el=>observer.observe(el));
+
+function bookNow(){
+    window.location.href = "booking.html";
+}
+</script>
 
 </body>
 </html>

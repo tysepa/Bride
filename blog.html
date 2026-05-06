@@ -1,67 +1,151 @@
-<!-- BLOG SECTION -->
-<section class="blog-section">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <span class="section-label">From Our Journal</span>
-  <h2>Wedding Stories & Tips</h2>
-  <p class="subtitle">Inspiration and advice from Bridal Belle Boutique</p>
+<title>Wedding Blog</title>
 
-  <div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-diamond"></div>
-    <div class="divider-line"></div>
-  </div>
+<link rel="stylesheet" href="./Css/blog.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
 
-  <div class="blog-featured">
-    <div class="featured-img">
-      <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80" alt="Featured">
-      <span class="featured-badge">Featured</span>
-    </div>
-    <div class="featured-content">
-      <p class="blog-meta">June 12, 2026 · Bridal Tips</p>
-      <h3>How to Choose the Perfect Wedding Dress for Your Body Type</h3>
-      <p>Our expert stylists share their guide to silhouettes and fittings that will make you feel radiant on your special day.</p>
-      <a href="#" class="read-more">Read Article</a>
-    </div>
-  </div>
+<body>
 
-  <div class="blog-grid">
+<!-- ================= NAVBAR ================= -->
+<header class="header">
 
-    <div class="blog-card">
-      <div class="card-img">
-        <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&q=80" alt="Groom Suits">
-      </div>
-      <div class="card-body">
-        <span class="card-tag">Groom Style</span>
-        <h4>Top 5 Groom Suit Trends for 2026</h4>
-        <p>Discover the styles every modern groom is wearing this season.</p>
-        <a href="#" class="read-more">Read More</a>
-      </div>
-    </div>
+<h1 class="logo">Bridal Belle Boutique</h1>
 
-    <div class="blog-card">
-      <div class="card-img">
-        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600&q=80" alt="Decoration">
-      </div>
-      <div class="card-body">
-        <span class="card-tag">Decoration</span>
-        <h4>Floral Arrangements That Steal the Show</h4>
-        <p>From lush garden blooms to minimalist greenery for your big day.</p>
-        <a href="#" class="read-more">Read More</a>
-      </div>
-    </div>
+<nav id="navMenu">
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="gallery.html">Gallery</a>
+<a href="blog.html">Blog</a>
+<a href="contact.html">Contact</a>
+</nav>
 
-    <div class="blog-card">
-      <div class="card-img">
-        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=80" alt="Cars">
-      </div>
-      <div class="card-body">
-        <span class="card-tag">Luxury Cars</span>
-        <h4>Arriving in Style: Our Wedding Car Packages</h4>
-        <p>Make your grand entrance truly unforgettable with the perfect vehicle.</p>
-        <a href="#" class="read-more">Read More</a>
-      </div>
-    </div>
+<div class="menu-toggle" onclick="toggleMenu()">☰</div>
 
-  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+<h2>Wedding Stories & Inspiration</h2>
+<p>Beautiful Moments • Style Tips • Real Love Stories</p>
+</section>
+
+<!-- ================= BLOG POSTS ================= -->
+<section class="blog-container">
+
+<!-- BLOG CARD -->
+<div class="blog-card fade">
+<img src="https://images.unsplash.com/photo-1519741497674-611481863552">
+
+<div class="blog-content">
+<span>Bridal Tips</span>
+<h3>Choosing Your Dream Wedding Dress</h3>
+<p>Discover how to find the perfect gown for your body shape and wedding theme.</p>
+<a href="#">Read More</a>
+</div>
+</div>
+
+<!-- VIDEO BLOG -->
+<div class="blog-card fade">
+<video controls>
+<source src="./Assets/3video.mp4" type="video/mp4">
+</video>
+
+<div class="blog-content">
+<span>Wedding Video</span>
+<h3>Romantic Outdoor Wedding Ceremony</h3>
+<p>Watch this unforgettable luxury wedding experience.</p>
+<a href="#">Watch Story</a>
+</div>
+</div>
+
+<!-- BLOG CARD -->
+<div class="blog-card fade">
+<img src="./Assets/img2.jpg">
+
+<div class="blog-content">
+<span>Decoration</span>
+<h3>Elegant Wedding Decoration Ideas</h3>
+<p>Create magical wedding moments with stunning floral designs.</p>
+<a href="#">Read More</a>
+</div>
+</div>
+
+<!-- VIDEO BLOG -->
+<div class="blog-card fade">
+<video controls>
+<source src="./Assets/cars.mp4" type="video/mp4">
+</video>
+
+<div class="blog-content">
+<span>Wedding Cars</span>
+<h3>Luxury Wedding Car Entrance</h3>
+<p>Arrive in style with premium wedding vehicles.</p>
+<a href="#">Watch Story</a>
+</div>
+</div>
 
 </section>
+
+<!-- ================= FOOTER ================= -->
+ <section class="cta fade">
+
+<h2>Your Dream Wedding Starts With Us 💍</h2>
+
+<button onclick="bookNow()" class="book-btn">
+Book Consultation
+</button>
+
+<!-- SOCIAL MEDIA -->
+<div class="social-media">
+
+<a href="#" class="social instagram" target="_blank">
+<i class="fab fa-instagram"></i>
+</a>
+
+<a href="#" class="social tiktok" target="_blank">
+<i class="fab fa-tiktok"></i>
+</a>
+
+<a href="#" class="social facebook" target="_blank">
+<i class="fab fa-facebook-f"></i>
+</a>
+
+</div>
+
+</section>
+<footer>
+<p>© 2026 Bridal Belle Boutique</p>
+</footer>
+
+<script>
+function toggleMenu(){
+document.getElementById("navMenu").classList.toggle("active");
+}
+
+/* Scroll Animation */
+const observer = new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("show");
+}
+});
+});
+
+document.querySelectorAll(".fade")
+.forEach(el=>observer.observe(el));
+
+function bookNow(){
+    window.location.href = "booking.html";
+}
+
+</script>
+
+</body>
+</html>
