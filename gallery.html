@@ -4,11 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wedding Gallery</title>
+<title>Bridal Belle Boutique - Premium Collection</title>
 
+<link rel="stylesheet" href="./Css/style.css">
 <link rel="stylesheet" href="./Css/gallery.css">
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="./Js/db.js"></script>
 </head>
 
 <body>
@@ -21,7 +22,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <nav id="navMenu">
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
-<a href="gallery.html">Gallery</a>
+<a href="gallery.html" class="active">Gallery</a>
 <a href="blog.html">Blog</a>
 <a href="contact.html">Contact</a>
 </nav>
@@ -39,65 +40,38 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <!-- ================= GALLERY ================= -->
 <div class="container">
 
-<div class="gallery" id="gallery">
+  <!-- Filters and Search controls -->
+  <div class="gallery-controls">
+    <div class="gallery-filters" id="filtersList">
+      <button class="filter-btn active" data-category="all">All Collection</button>
+      <button class="filter-btn" data-category="dresses">Bridal Dresses</button>
+      <button class="filter-btn" data-category="suits">Groom Suits</button>
+      <button class="filter-btn" data-category="decor">Wedding Decoration</button>
+      <button class="filter-btn" data-category="cars">Wedding Cars</button>
+    </div>
+    
+    <div class="gallery-search">
+      <i class="fas fa-search"></i>
+      <input type="text" id="gallerySearchInput" placeholder="Search collection by title...">
+    </div>
+  </div>
 
-<!-- SAMPLE IMAGES -->
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf">
-</div>
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1519741497674-611481863552">
-</div>
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91">
-</div>
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc">
-</div>
-
-<div class="gallery-item">
-<img src="https://images.unsplash.com/photo-1529636798458-92182e662485">
-</div>
-
-<div class="gallery-item">
-<img src="./Assets/food.jpg">
-</div>
-<div class="gallery-item">
-<img src="./Assets/food.jpg">
-</div>
-<div class="gallery-item">
-<img src="./Assets/mandapam_imag1.jpg">
-</div>
-<div class="gallery-item">
-<img src="./Assets/place.jpg">
-</div>
-<div class="gallery-item">
-<img src="./Assets/Decoration.jpg">
-</div>
-<div class="gallery-item">
-<img src="./Assets/img2.jpg">
-</div>
-<div class="gallery-item">
-<img src="./Assets/grooms.jpg">
-</div>
-<div class="gallery-item">
-<img src="./Assets/dressing.jpeg">
-</div>
-<div class="gallery-item">
-<img src="./Assets/car.jpg">
-</div>
-
-</div>
+  <!-- Dynamic Gallery Grid -->
+  <div class="gallery" id="galleryGrid">
+    <!-- Loaded Dynamically from db.js -->
+  </div>
 
 </div>
 
 <!-- ================= LIGHTBOX ================= -->
 <div id="lightbox">
-<span onclick="closeLightbox()">✖</span>
-<img id="lightbox-img">
+  <div class="lightbox-content">
+    <span class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></span>
+    <button class="lightbox-btn lightbox-prev" onclick="changeLightboxImg(-1)"><i class="fas fa-chevron-left"></i></button>
+    <img id="lightbox-img" src="" alt="Lightbox image">
+    <button class="lightbox-btn lightbox-next" onclick="changeLightboxImg(1)"><i class="fas fa-chevron-right"></i></button>
+    <div class="lightbox-caption" id="lightbox-caption">Caption</div>
+  </div>
 </div>
 
 <!-- ================= FOOTER ================= -->
@@ -136,32 +110,126 @@ function toggleMenu(){
  document.getElementById("navMenu").classList.toggle("active");
 }
 
-/* IMAGE LIGHTBOX */
-const images=document.querySelectorAll(".gallery-item img");
-const lightbox=document.getElementById("lightbox");
-const lightboxImg=document.getElementById("lightbox-img");
+// State variables for gallery filter, search and lightbox
+let activeCategory = 'all';
+let searchQuery = '';
+let currentGalleryItems = [];
+let lightboxIndex = 0;
 
-images.forEach(img=>{
- img.onclick=()=>{
-   lightbox.style.display="flex";
-   lightboxImg.src=img.src;
- }
-});
+// Fetch all gallery items from local storage
+let allGalleryItems = window.db.getGallery() || [];
 
-function closeLightbox(){
- lightbox.style.display="none";
+// DOM Elements
+const galleryGrid = document.getElementById("galleryGrid");
+const searchInput = document.getElementById("gallerySearchInput");
+const filterButtons = document.querySelectorAll(".filter-btn");
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxCaption = document.getElementById("lightbox-caption");
 
+// Render Gallery function
+function renderGallery() {
+  // Filter by Category
+  let filtered = allGalleryItems.filter(item => {
+    if (activeCategory === 'all') return true;
+    return item.category === activeCategory;
+  });
+
+  // Filter by Search Query
+  if (searchQuery.trim() !== '') {
+    const query = searchQuery.toLowerCase();
+    filtered = filtered.filter(item => {
+      const titleMatch = item.title && item.title.toLowerCase().includes(query);
+      const categoryMatch = item.category && item.category.toLowerCase().includes(query);
+      return titleMatch || categoryMatch;
+    });
+  }
+
+  currentGalleryItems = filtered;
+
+  if (filtered.length === 0) {
+    galleryGrid.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 50px 0; color: var(--text-light);">
+        <i class="far fa-image" style="font-size: 40px; margin-bottom: 15px; color: var(--primary);"></i>
+        <p>No collection items found matching your filters.</p>
+      </div>
+    `;
+    return;
+  }
+
+  galleryGrid.innerHTML = filtered.map((item, idx) => `
+    <div class="gallery-item fade" onclick="openLightbox(${idx})">
+      <img src="${item.image}" alt="${item.title}">
+      <div class="gallery-info">
+        <h4>${item.title}</h4>
+        <span>${item.category}</span>
+      </div>
+    </div>
+  `).join("");
+
+  // Re-observe animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      }
+    });
+  });
+  document.querySelectorAll(".fade").forEach(el => observer.observe(el));
 }
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("show");
-}
-});
+
+// Filter Event Listeners
+filterButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    filterButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeCategory = btn.getAttribute("data-category");
+    renderGallery();
+  });
 });
 
-document.querySelectorAll(".fade")
-.forEach(el=>observer.observe(el));
+// Search Event Listener
+searchInput.addEventListener("input", (e) => {
+  searchQuery = e.target.value;
+  renderGallery();
+});
+
+// Lightbox functions
+function openLightbox(index) {
+  lightboxIndex = index;
+  const item = currentGalleryItems[lightboxIndex];
+  if (!item) return;
+
+  lightboxImg.src = item.image;
+  lightboxCaption.textContent = item.title;
+  lightbox.classList.add("active");
+  document.body.style.overflow = "hidden"; // Disable background scrolling
+}
+
+function closeLightbox() {
+  lightbox.classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+function changeLightboxImg(dir) {
+  if (currentGalleryItems.length === 0) return;
+  lightboxIndex = (lightboxIndex + dir + currentGalleryItems.length) % currentGalleryItems.length;
+  const item = currentGalleryItems[lightboxIndex];
+  if (item) {
+    lightboxImg.src = item.image;
+    lightboxCaption.textContent = item.title;
+  }
+}
+
+// Close lightbox on click outside the image
+lightbox.addEventListener("click", (e) => {
+  if (e.target === lightbox || e.target.classList.contains("lightbox-content")) {
+    closeLightbox();
+  }
+});
+
+// Initialize Gallery Page load
+renderGallery();
 
 function bookNow(){
     window.location.href = "booking.html";

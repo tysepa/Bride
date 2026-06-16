@@ -4,11 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wedding Blog</title>
+<title>Bridal Belle Boutique - Wedding Inspiration Blog</title>
 
+<link rel="stylesheet" href="./Css/style.css">
 <link rel="stylesheet" href="./Css/blog.css">
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="./Js/db.js"></script>
 </head>
 
 <body>
@@ -22,7 +23,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <a href="index.html">Home</a>
 <a href="about.html">About</a>
 <a href="gallery.html">Gallery</a>
-<a href="blog.html">Blog</a>
+<a href="blog.html" class="active">Blog</a>
 <a href="contact.html">Contact</a>
 </nav>
 
@@ -36,62 +37,38 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <p>Beautiful Moments • Style Tips • Real Love Stories</p>
 </section>
 
+<!-- ================= BLOG CONTROLS ================= -->
+<div class="blog-controls-wrapper">
+  <div class="blog-controls">
+    <div class="blog-filters">
+      <button class="filter-btn active" data-category="all">All Stories</button>
+      <button class="filter-btn" data-category="Bridal Tips">Bridal Tips</button>
+      <button class="filter-btn" data-category="Wedding Video">Wedding Video</button>
+      <button class="filter-btn" data-category="Decoration">Decoration</button>
+      <button class="filter-btn" data-category="Wedding Cars">Wedding Cars</button>
+    </div>
+    
+    <div class="blog-search">
+      <i class="fas fa-search"></i>
+      <input type="text" id="blogSearchInput" placeholder="Search blog articles...">
+    </div>
+  </div>
+</div>
+
 <!-- ================= BLOG POSTS ================= -->
-<section class="blog-container">
-
-<!-- BLOG CARD -->
-<div class="blog-card fade">
-<img src="https://images.unsplash.com/photo-1519741497674-611481863552">
-
-<div class="blog-content">
-<span>Bridal Tips</span>
-<h3>Choosing Your Dream Wedding Dress</h3>
-<p>Discover how to find the perfect gown for your body shape and wedding theme.</p>
-<a href="#">Read More</a>
-</div>
-</div>
-
-<!-- VIDEO BLOG -->
-<div class="blog-card fade">
-<video controls>
-<source src="./Assets/3video.mp4" type="video/mp4">
-</video>
-
-<div class="blog-content">
-<span>Wedding Video</span>
-<h3>Romantic Outdoor Wedding Ceremony</h3>
-<p>Watch this unforgettable luxury wedding experience.</p>
-<a href="#">Watch Story</a>
-</div>
-</div>
-
-<!-- BLOG CARD -->
-<div class="blog-card fade">
-<img src="./Assets/img2.jpg">
-
-<div class="blog-content">
-<span>Decoration</span>
-<h3>Elegant Wedding Decoration Ideas</h3>
-<p>Create magical wedding moments with stunning floral designs.</p>
-<a href="#">Read More</a>
-</div>
-</div>
-
-<!-- VIDEO BLOG -->
-<div class="blog-card fade">
-<video controls>
-<source src="./Assets/cars.mp4" type="video/mp4">
-</video>
-
-<div class="blog-content">
-<span>Wedding Cars</span>
-<h3>Luxury Wedding Car Entrance</h3>
-<p>Arrive in style with premium wedding vehicles.</p>
-<a href="#">Watch Story</a>
-</div>
-</div>
-
+<section class="blog-container" id="blogGrid">
+  <!-- Loaded Dynamically from db.js -->
 </section>
+
+<!-- ================= FULL ARTICLE MODAL ================= -->
+<div id="blogModal" class="custom-modal">
+  <div class="modal-content blog-full-modal">
+    <span class="modal-close" onclick="closeBlogModal()"><i class="fas fa-times"></i></span>
+    <div class="blog-full-content" id="blogModalBody">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+</div>
 
 <!-- ================= FOOTER ================= -->
  <section class="cta fade">
@@ -129,22 +106,149 @@ function toggleMenu(){
 document.getElementById("navMenu").classList.toggle("active");
 }
 
-/* Scroll Animation */
-const observer = new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("show");
+// Blog state
+let activeCategory = 'all';
+let searchQuery = '';
+let allBlogs = window.db.getBlogs() || [];
+
+// DOM Elements
+const blogGrid = document.getElementById("blogGrid");
+const searchInput = document.getElementById("blogSearchInput");
+const filterBtns = document.querySelectorAll(".filter-btn");
+const blogModal = document.getElementById("blogModal");
+const blogModalBody = document.getElementById("blogModalBody");
+
+function renderBlogs() {
+  let filtered = allBlogs.filter(post => {
+    if (activeCategory === 'all') return true;
+    return post.category.toLowerCase() === activeCategory.toLowerCase();
+  });
+
+  if (searchQuery.trim() !== '') {
+    const query = searchQuery.toLowerCase();
+    filtered = filtered.filter(post => {
+      return post.title.toLowerCase().includes(query) || 
+             post.snippet.toLowerCase().includes(query) ||
+             post.category.toLowerCase().includes(query);
+    });
+  }
+
+  if (filtered.length === 0) {
+    blogGrid.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 60px 0; color: var(--text-light);">
+        <i class="far fa-newspaper" style="font-size: 45px; margin-bottom: 15px; color: var(--primary);"></i>
+        <p>No blog posts found matching your criteria.</p>
+      </div>
+    `;
+    return;
+  }
+
+  blogGrid.innerHTML = filtered.map(post => {
+    let mediaHTML = '';
+    if (post.mediaType === 'video') {
+      mediaHTML = `<video src="${post.mediaUrl}" muted playsinline loop onmouseover="this.play()" onmouseout="this.pause()"></video>`;
+    } else {
+      mediaHTML = `<img src="${post.mediaUrl}" alt="${post.title}">`;
+    }
+
+    return `
+      <div class="blog-card fade">
+        <div class="blog-media-wrap">
+          ${mediaHTML}
+        </div>
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span class="blog-category">${post.category}</span>
+            <span class="blog-date">${post.date || ''}</span>
+          </div>
+          <h3>${post.title}</h3>
+          <p>${post.snippet}</p>
+          <a href="#" class="read-more-btn" onclick="openBlogModal('${post.id}', event)">
+            Read Story <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  // Re-observe animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      }
+    });
+  });
+  document.querySelectorAll(".fade").forEach(el => observer.observe(el));
 }
-});
+
+// Category selection
+filterBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    filterBtns.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeCategory = btn.getAttribute("data-category");
+    renderBlogs();
+  });
 });
 
-document.querySelectorAll(".fade")
-.forEach(el=>observer.observe(el));
+// Search input
+searchInput.addEventListener("input", (e) => {
+  searchQuery = e.target.value;
+  renderBlogs();
+});
+
+// Modal operations
+function openBlogModal(id, event) {
+  if (event) event.preventDefault();
+  const post = allBlogs.find(p => p.id === id);
+  if (!post) return;
+
+  let mediaHTML = '';
+  if (post.mediaType === 'video') {
+    mediaHTML = `<video src="${post.mediaUrl}" controls autoplay></video>`;
+  } else {
+    mediaHTML = `<img src="${post.mediaUrl}" alt="${post.title}">`;
+  }
+
+  blogModalBody.innerHTML = `
+    <span style="color: var(--primary); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
+      ${post.category} &bull; ${post.date || ''}
+    </span>
+    <h2 style="text-align: left; font-size: 30px; margin-top: 8px; margin-bottom: 20px; line-height: 1.3;">${post.title}</h2>
+    <div class="blog-full-media">
+      ${mediaHTML}
+    </div>
+    <div class="blog-full-text">
+      <p style="font-size: 16px; font-weight: 500; margin-bottom: 15px; color: var(--dark);">${post.snippet}</p>
+      <p style="white-space: pre-line;">${post.content}</p>
+    </div>
+  `;
+
+  blogModal.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeBlogModal() {
+  blogModal.classList.remove("active");
+  // Pause any playing videos inside modal when closing
+  const video = blogModalBody.querySelector("video");
+  if (video) video.pause();
+  document.body.style.overflow = "";
+}
+
+blogModal.addEventListener("click", (e) => {
+  if (e.target === blogModal) {
+    closeBlogModal();
+  }
+});
+
+// Initial load
+renderBlogs();
 
 function bookNow(){
     window.location.href = "booking.html";
 }
-
 </script>
 
 </body>

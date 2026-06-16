@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wedding Booking</title>
+<title>Bridal Belle Boutique - Book Consultation</title>
 
+<link rel="stylesheet" href="./Css/style.css">
 <link rel="stylesheet" href="./Css/booking.css">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="./Js/db.js"></script>
 </head>
 
 <body>
@@ -20,6 +21,7 @@
 
 <nav id="navMenu">
 <a href="index.html">Home</a>
+<a href="about.html">About</a>
 <a href="gallery.html">Gallery</a>
 <a href="blog.html">Blog</a>
 <a href="contact.html">Contact</a>
@@ -38,39 +40,49 @@
 <!-- ================= BOOKING FORM ================= -->
 <section class="booking-container">
 
-<form class="booking-form">
+<form class="booking-form" id="bookingForm">
 
 <h2>Wedding Booking Form</h2>
 
-<input type="text" placeholder="Full Name" required>
-<input type="email" placeholder="Email Address" required>
-<input type="tel" placeholder="Phone Number" required>
+<label>Your Details</label>
+<input type="text" id="custName" placeholder="Full Name" required>
+<input type="email" id="custEmail" placeholder="Email Address" required>
+<input type="tel" id="custPhone" placeholder="Phone Number" required>
 
 <label>Wedding Date</label>
-<input type="date" required>
+<input type="date" id="weddingDate" required>
 
 <label>Select Wedding Materials</label>
-
-<div class="materials">
-
-<label><input type="checkbox" value="500"> Bridal Dress ($500)</label>
-<label><input type="checkbox" value="400"> Groom Suit ($400)</label>
-<label><input type="checkbox" value="700"> Decoration Package ($700)</label>
-<label><input type="checkbox" value="600"> Wedding Car ($600)</label>
-<label><input type="checkbox" value="900"> Photography & Video ($900)</label>
-<label><input type="checkbox" value="300"> Makeup Service ($300)</label>
-
+<div class="materials" id="materialsList">
+  <!-- Dynamically injected from db.js services -->
 </div>
 
-<h3>Total Price: $<span id="total">0</span></h3>
+<div class="total-box">
+  <h3>Total Estimated Price: <span>$<span id="total">0</span></span></h3>
+</div>
 
-<textarea placeholder="Additional Requests"></textarea>
+<label>Additional Requests</label>
+<textarea id="additionalRequests" placeholder="Write any specific colors, dimensions, or instructions here..."></textarea>
 
 <button type="submit">Confirm Booking</button>
 
 </form>
 
 </section>
+
+<!-- ================= CONFIRMATION MODAL ================= -->
+<div id="confirmModal" class="custom-modal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></span>
+    <div class="modal-icon"><i class="fas fa-calendar-check"></i></div>
+    <h2>Booking Confirmed!</h2>
+    <p style="color: var(--text-light); margin-bottom: 20px;">Your dream wedding ceremony details have been scheduled successfully.</p>
+    
+    <div id="bookingSummary"></div>
+    
+    <button onclick="goToHome()" class="book-btn" style="margin-top: 15px;">Back to Home</button>
+  </div>
+</div>
 
 <footer>
 <p>© 2026 Wedding Wear Rental</p>

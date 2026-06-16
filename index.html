@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Blog - Bridal Belle Boutique</title>
+<title>Bridal Belle Boutique - Dream Wedding Ceremony</title>
 
 <link rel="stylesheet" href="./Css/style.css">
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="./Js/db.js"></script>
 </head>
 
 <body>
@@ -19,7 +19,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <h1 class="logo">Bridal Belle Boutique</h1>
 
 <nav id="navMenu">
-<a href="index.html">Home</a>
+<a href="index.html" class="active">Home</a>
 <a href="about.html">About</a>
 <a href="gallery.html">Gallery</a>
 <a href="blog.html">Blog</a>
@@ -54,23 +54,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 
 <h2>Our Wedding Services</h2>
 
-<div class="services">
-
-<div class="service">
-<img src="./Assets/dressing.jpeg">
-<h3>Bridal Dresses</h3>
-</div>
-
-<div class="service">
-<img src="./Assets/grooms.jpg">
-<h3>Groom Suits</h3>
-</div>
-
-<div class="service">
-<img src="./Assets/mandapam_imag1.jpg">
-<h3>Wedding Decoration</h3>
-</div>
-
+<div class="services" id="servicesList">
+  <!-- Loaded Dynamically from db.js -->
 </div>
 </section>
 
@@ -119,7 +104,7 @@ Book Consultation
 </a>
 
 <!-- ADMIN LOGIN ICON -->
-<a href="./Admin/admin.html" class="admin-float">
+<a href="./login.html" class="admin-float">
 <i class="fas fa-user-shield"></i>
 </a>
 
@@ -135,31 +120,48 @@ function toggleMenu(){
  document.getElementById("navMenu").classList.toggle("active");
 }
 
+// Slider Logic
 let slides = document.querySelectorAll(".slide");
 let index = 0;
-
 function changeSlide(){
-
-slides[index].classList.remove("active");
-
-index = (index + 1) % slides.length;
-
-slides[index].classList.add("active");
-
+  if (slides.length > 0) {
+    slides[index].classList.remove("active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+  }
+}
+if (slides.length > 0) {
+  setInterval(changeSlide, 4000);
 }
 
-setInterval(changeSlide,4000);
-
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("show");
+// Load Services Dynamically
+const servicesContainer = document.getElementById("servicesList");
+const services = window.db.getServices();
+if (servicesContainer && services) {
+  servicesContainer.innerHTML = services.map(s => `
+    <div class="service fade">
+      <div class="service-img-wrap">
+        <img src="${s.image}" alt="${s.name}">
+      </div>
+      <div class="service-content">
+        <h3>${s.name}</h3>
+        <p>${s.description || 'Premium rental and fitting services for your wedding ceremony.'}</p>
+        <div class="service-price">From $${s.price}</div>
+      </div>
+    </div>
+  `).join("");
 }
-});
+
+// Intersection Observer for animations
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    }
+  });
 });
 
-document.querySelectorAll(".fade")
-.forEach(el=>observer.observe(el));
+document.querySelectorAll(".fade").forEach(el => observer.observe(el));
 
 function bookNow(){
     window.location.href = "booking.html";

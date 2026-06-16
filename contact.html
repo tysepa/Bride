@@ -4,11 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Contact - Wedding Wear Rental</title>
+<title>Bridal Belle Boutique - Contact Us</title>
 
+<link rel="stylesheet" href="./Css/style.css">
 <link rel="stylesheet" href="./Css/contact.css">
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="./Js/db.js"></script>
 </head>
 
 <body>
@@ -23,7 +24,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <a href="about.html">About</a>
 <a href="gallery.html">Gallery</a>
 <a href="blog.html">Blog</a>
-<a href="contact.html">Contact</a>
+<a href="contact.html" class="active">Contact</a>
 </nav>
 
 <div class="menu-toggle" onclick="toggleMenu()">☰</div>
@@ -39,54 +40,69 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <!-- ================= CONTACT SECTION ================= -->
 <section class="contact-container">
 
-<!-- CONTACT FORM -->
-<div class="contact-form">
+  <!-- CONTACT FORM -->
+  <div class="contact-form-box">
+    <h2>Send Us a Message</h2>
+    <form id="contactForm" onsubmit="return handleMessageSubmit(event)">
+      <input type="text" id="msgName" placeholder="Your Name" required>
+      <input type="email" id="msgEmail" placeholder="Email Address" required>
+      <textarea id="msgText" placeholder="Your Message..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
 
-<h2>Send Us a Message</h2>
+  <!-- CONTACT INFO -->
+  <div class="contact-info">
+    <h2>Our Information</h2>
+    
+    <div class="info-card">
+      <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+      <div class="info-details">
+        <h4>Location</h4>
+        <p>Kigali, Rwanda</p>
+      </div>
+    </div>
 
-<form onsubmit="return sendMessage()">
+    <div class="info-card">
+      <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+      <div class="info-details">
+        <h4>Call Us</h4>
+        <p>+250 795 857 921</p>
+      </div>
+    </div>
 
-<input type="text" placeholder="Your Name" required>
-
-<input type="email" placeholder="Email Address" required>
-
-<textarea placeholder="Your Message" required></textarea>
-
-<button type="submit">Send Message</button>
-
-</form>
-
-</div>
-
-<!-- CONTACT INFO -->
-<div class="contact-info">
-
-<h2>Our Information</h2>
-
-<div class="info-card">
-📍 Kigali, Rwanda
-</div>
-
-<div class="info-card">
-📞 +250 795 857 921
-</div>
-
-<div class="info-card">
-✉️ bridalbelle@outlook.com
-</div>
-
-</div>
+    <div class="info-card">
+      <div class="info-icon"><i class="far fa-envelope"></i></div>
+      <div class="info-details">
+        <h4>Email Us</h4>
+        <p>bridalbelle@outlook.com</p>
+      </div>
+    </div>
+  </div>
 
 </section>
 
 <!-- ================= MAP ================= -->
 <section class="map">
-<iframe
-src="https://www.google.com/maps?q=Kigali,Rwanda&output=embed"
-loading="lazy"
-allowfullscreen>
-</iframe>
+  <div class="map-wrapper">
+    <iframe
+      src="https://www.google.com/maps?q=Kigali,Rwanda&output=embed"
+      loading="lazy"
+      allowfullscreen>
+    </iframe>
+  </div>
 </section>
+
+<!-- ================= SUCCESS MODAL ================= -->
+<div id="contactSuccessModal" class="custom-modal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeSuccessModal()"><i class="fas fa-times"></i></span>
+    <div class="modal-icon"><i class="far fa-envelope-open" style="color: var(--primary);"></i></div>
+    <h2>Message Sent!</h2>
+    <p style="color: var(--text-light); margin-bottom: 20px;">Thank you for reaching out. Our boutique consultants will review your message and reply via email within 24 hours.</p>
+    <button onclick="closeSuccessModal()" class="book-btn">Close</button>
+  </div>
+</div>
 
 <!-- ================= FOOTER ================= -->
 <section class="cta fade">
@@ -124,23 +140,52 @@ function toggleMenu(){
  document.getElementById("navMenu").classList.toggle("active");
 }
 
-function sendMessage(){
- alert("Message sent successfully!");
- return false;
+const successModal = document.getElementById("contactSuccessModal");
+
+function handleMessageSubmit(e) {
+  e.preventDefault();
+  
+  const name = document.getElementById("msgName").value;
+  const email = document.getElementById("msgEmail").value;
+  const message = document.getElementById("msgText").value;
+  
+  // Save message to database
+  window.db.addMessage(name, email, message);
+  
+  // Clear form
+  document.getElementById("contactForm").reset();
+  
+  // Show success modal
+  successModal.classList.add("active");
+  document.body.style.overflow = "hidden";
+  
+  return false;
 }
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("show");
+
+function closeSuccessModal() {
+  successModal.classList.remove("active");
+  document.body.style.overflow = "";
 }
-});
+
+// Close modal when clicking outside
+successModal.addEventListener("click", (e) => {
+  if (e.target === successModal) {
+    closeSuccessModal();
+  }
 });
 
-document.querySelectorAll(".fade")
-.forEach(el=>observer.observe(el));
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    }
+  });
+});
+
+document.querySelectorAll(".fade").forEach(el => observer.observe(el));
 
 function bookNow(){
-    window.location.href = "booking.html";
+     window.location.href = "booking.html";
 }
 </script>
 
