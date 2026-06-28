@@ -57,7 +57,17 @@ const SEED_GALLERY = [
   { id: "g10", image: "./Assets/img2.jpg", title: "Beautiful Arch Entrance", category: "decor" },
   { id: "g11", image: "./Assets/grooms.jpg", title: "Royal Navy Blue Groom Suit", category: "suits" },
   { id: "g12", image: "./Assets/dressing.jpeg", title: "Embroidered Gold Bridal Lace", category: "dresses" },
-  { id: "g13", image: "./Assets/car.jpg", title: "Classic Vintage Wedding Ride", category: "cars" }
+  { id: "g13", image: "./Assets/car.jpg", title: "Classic Vintage Wedding Ride", category: "cars" },
+  { id: "g14", image: "./Assets/rwanda_wedding_1.jpg", title: "Traditional Groom Escort", category: "suits" },
+  { id: "g15", image: "./Assets/rwanda_wedding_2.jpg", title: "Groomsmen Traditional Procession", category: "suits" },
+  { id: "g16", image: "./Assets/rwanda_wedding_3.jpg", title: "Traditional Bride & Groom Portrait", category: "dresses" },
+  { id: "g17", image: "./Assets/rwanda_wedding_4.jpg", title: "Elegant Traditional Couple Moment", category: "dresses" },
+  { id: "g18", image: "./Assets/rwanda_wedding_5.jpg", title: "Luxury Traditional Wedding Stage Setup", category: "decor" },
+  { id: "g19", image: "./Assets/rwanda_wedding_6.jpg", title: "Pink & Grey Traditional Umushanana", category: "dresses" },
+  { id: "g20", image: "./Assets/rwanda_wedding_7.jpg", title: "Golden Ochre Bridal Wrap Detail", category: "dresses" },
+  { id: "g21", image: "./Assets/rwanda_wedding_8.jpg", title: "Vibrant Pink Floral Ceremonial Attire", category: "dresses" },
+  { id: "g22", image: "./Assets/rwanda_wedding_9.jpg", title: "Miss to Mrs Bridal Shower & Outdoor Setup", category: "decor" },
+  { id: "g23", image: "./Assets/rwanda_wedding_10.jpg", title: "Emerald Green & Gold Traditional Couple", category: "dresses" }
 ];
 
 const SEED_BLOGS = [
@@ -169,6 +179,18 @@ const SEED_MESSAGES = [
   }
   if (!localStorage.getItem("bbb_gallery")) {
     localStorage.setItem("bbb_gallery", JSON.stringify(SEED_GALLERY));
+  } else {
+    let currentGallery = JSON.parse(localStorage.getItem("bbb_gallery")) || [];
+    let updated = false;
+    SEED_GALLERY.forEach(seedItem => {
+      if (!currentGallery.some(item => item.id === seedItem.id)) {
+        currentGallery.push(seedItem);
+        updated = true;
+      }
+    });
+    if (updated) {
+      localStorage.setItem("bbb_gallery", JSON.stringify(currentGallery));
+    }
   }
   if (!localStorage.getItem("bbb_blogs")) {
     localStorage.setItem("bbb_blogs", JSON.stringify(SEED_BLOGS));
