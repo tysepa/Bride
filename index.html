@@ -58,19 +58,69 @@
   <!-- Loaded Dynamically from db.js -->
 </div>
 </section>
+<!-- ================= SHOWCASE GALLERY PREVIEW ================= -->
+<section class="showcase-gallery-section container fade">
+  <div class="section-header-wrap">
+    <h2>Featured Wedding Gallery</h2>
+    <p>A glimpse of the elegant, traditional and modern wedding moments we have styled and curated.</p>
+  </div>
+  
+  <div class="showcase-gallery-grid">
+    <div class="showcase-item" onclick="location.href='gallery.html'">
+      <img src="./Assets/rwanda_wedding_3.jpg" alt="Traditional Couple Portrait">
+      <div class="showcase-overlay">
+        <span>Bridal Collection</span>
+        <h3>Traditional Couple Portrait</h3>
+      </div>
+    </div>
+    
+    <div class="showcase-item" onclick="location.href='gallery.html'">
+      <img src="./Assets/rwanda_wedding_1.jpg" alt="Traditional Groom Escort">
+      <div class="showcase-overlay">
+        <span>Groom Suits</span>
+        <h3>Traditional Groom Escort</h3>
+      </div>
+    </div>
+    
+    <div class="showcase-item" onclick="location.href='gallery.html'">
+      <img src="./Assets/rwanda_wedding_5.jpg" alt="Traditional Wedding Setup">
+      <div class="showcase-overlay">
+        <span>Wedding Decoration</span>
+        <h3>Luxury Stage & Decor</h3>
+      </div>
+    </div>
+    
+    <div class="showcase-item" onclick="location.href='gallery.html'">
+      <img src="./Assets/rwanda_wedding_10.jpg" alt="Emerald Green Ceremony Outfit">
+      <div class="showcase-overlay">
+        <span>Elegant Attire</span>
+        <h3>Emerald Green & Gold Couple</h3>
+      </div>
+    </div>
+  </div>
 
-<!-- ================= CAR SECTION ================= -->
+  <div class="gallery-cta-container">
+    <button class="gallery-cta-btn" onclick="location.href='gallery.html'">View Full Gallery</button>
+  </div>
+</section>
 
-
-<!-- ================= VIDEO ================= -->
-<section class="video-section">
-
-<h2>Wedding Ceremony Experience</h2>
-
-<video controls muted loop>
-<source src="./Assets/1video.mp4" type="video/mp4">
-</video>
-
+<!-- ================= NEWSLETTER SUBSCRIPTION ================= -->
+<section class="subscription-section fade">
+  <div class="subscription-card">
+    <h2>Join the Bridal Club</h2>
+    <p>Stay updated on new designer bridal gown additions, luxury groom suit arrivals, and professional wedding decoration insights.</p>
+    
+    <form id="newsletterForm" onsubmit="handleSubscribe(event)" class="subscription-form">
+      <div class="subscription-input-wrap">
+        <input type="email" id="subscriberEmail" placeholder="Enter your email address" required>
+      </div>
+      <button type="submit" class="subscription-btn">Subscribe</button>
+    </form>
+    
+    <div id="subscriptionSuccess" class="subscription-success-msg">
+      ✨ Thank you for subscribing! We've sent a welcome gift to your inbox.
+    </div>
+  </div>
 </section>
 
 <!-- ================= FOOTER ================= -->
@@ -109,6 +159,24 @@ Book Consultation
 <p>© 2026 Bridal Belle Boutique & Copy Light by Tys Teck</p>
 </footer>
 
+<!-- ================= SERVICE DETAILS MODAL ================= -->
+<div id="serviceModal" class="custom-modal">
+  <div class="modal-content service-modal-content">
+    <span class="modal-close" onclick="closeServiceModal()"><i class="fas fa-times"></i></span>
+    <div class="service-modal-body">
+      <div class="service-modal-img-wrap">
+        <img id="serviceModalImg" src="" alt="Service Image">
+      </div>
+      <div class="service-modal-info">
+        <h2 id="serviceModalTitle">Service Title</h2>
+        <div class="service-modal-price-tag" id="serviceModalPrice">Price</div>
+        <p id="serviceModalDesc">Service Description</p>
+        <button id="serviceModalBookBtn" class="book-btn service-modal-btn">Book This Service</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 function toggleMenu(){
  document.getElementById("navMenu").classList.toggle("active");
@@ -140,7 +208,7 @@ if (servicesContainer && services) {
       <div class="service-content">
         <h3>${s.name}</h3>
         <p>${s.description || 'Premium rental and fitting services for your wedding ceremony.'}</p>
-        <div class="service-price">From $${s.price}</div>
+        <a href="javascript:void(0)" onclick="openServiceModal('${s.id}')" class="read-more-btn">Read More <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
   `).join("");
@@ -160,6 +228,65 @@ document.querySelectorAll(".fade").forEach(el => observer.observe(el));
 function bookNow(){
     window.location.href = "booking.html";
 }
+
+function handleSubscribe(event) {
+  event.preventDefault();
+  const emailInput = document.getElementById("subscriberEmail");
+  const successMsg = document.getElementById("subscriptionSuccess");
+  const form = document.getElementById("newsletterForm");
+  
+  const email = emailInput.value.trim();
+  if (!email) return;
+  
+  // Save to localStorage under bbb_subscribers
+  let subscribers = JSON.parse(localStorage.getItem("bbb_subscribers")) || [];
+  if (!subscribers.includes(email)) {
+    subscribers.push(email);
+    localStorage.setItem("bbb_subscribers", JSON.stringify(subscribers));
+  }
+  
+  // Animate form elements out and success message in
+  form.style.transition = "all 0.5s ease";
+  form.style.opacity = "0";
+  form.style.transform = "scale(0.9)";
+  
+  setTimeout(() => {
+    form.style.display = "none";
+    successMsg.style.display = "block";
+  }, 500);
+}
+
+function openServiceModal(id) {
+  const service = window.db.getServices().find(s => s.id === id);
+  if (!service) return;
+  
+  document.getElementById("serviceModalImg").src = service.image;
+  document.getElementById("serviceModalImg").alt = service.name;
+  document.getElementById("serviceModalTitle").textContent = service.name;
+  document.getElementById("serviceModalPrice").textContent = "Start with talking with us";
+  document.getElementById("serviceModalDesc").textContent = service.description || 'Premium custom sizing and rental for your special day.';
+  
+  // Set up book button link
+  document.getElementById("serviceModalBookBtn").onclick = () => {
+    window.location.href = `booking.html?service=${service.id}`;
+  };
+  
+  document.getElementById("serviceModal").classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeServiceModal() {
+  document.getElementById("serviceModal").classList.remove("active");
+  document.body.style.overflow = "";
+}
+
+// Close modal when clicking outside of it
+window.addEventListener("click", (e) => {
+  const modal = document.getElementById("serviceModal");
+  if (e.target === modal) {
+    closeServiceModal();
+  }
+});
 </script>
 
 </body>

@@ -22,34 +22,25 @@ const SEED_SERVICES = [
     description: "Exquisite mandapams, luxury floral arrangements, backdrops, lighting, and layout setups tailored to your theme."
   },
   {
-    id: "s4",
-    name: "Luxury Wedding Cars",
-    price: 600,
-    image: "./Assets/car.jpg",
-    description: "Premium class vehicles (Rolls Royce, Mercedes, classic vintage cars) with professional chauffeurs."
-  },
-  {
     id: "s5",
     name: "Photography & Video",
     price: 900,
     image: "./Assets/place.jpg",
-    description: "Professional high-definition photo and video coverage, pre-wedding shoots, and beautifully edited ceremony videos."
   },
   {
     id: "s6",
-    name: "Bridal Makeup Service",
-    price: 300,
-    image: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486",
-    description: "Personalized professional makeup styling, hair dressing, and trial sessions by elite bridal artists."
+    name: "Cooking in your wedding",
+    price: 800,
+    image: "./Assets/wedding_catering_food.jpg",
+    description: "Professional culinary preparation, gourmet catering setups, and customized reception menus crafted to delight your guests."
   }
 ];
 
 const SEED_GALLERY = [
-  { id: "g1", image: "https://images.unsplash.com/photo-1520854221256-17451cc331bf", title: "Dreamy Golden Hour Bride", category: "dresses" },
-  { id: "g2", image: "https://images.unsplash.com/photo-1519741497674-611481863552", title: "Classic White Veil Ceremony", category: "dresses" },
-  { id: "g3", image: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91", title: "Bride Pre-wedding Fitting", category: "dresses" },
-  { id: "g4", image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc", title: "Flower Bouquet Details", category: "decor" },
-  { id: "g5", image: "https://images.unsplash.com/photo-1529636798458-92182e662485", title: "Magical Mandapam Backdrop", category: "decor" },
+  { id: "g1", image: "./Assets/img2.jpg", title: "Dreamy Golden Hour Bride", category: "dresses" },
+  { id: "g2", image: "./Assets/img1.jpg", title: "Classic White Veil Ceremony", category: "dresses" },
+  { id: "g4", image: "./Assets/flower-bouquet.jpg", title: "Flower Bouquet Details", category: "decor" },
+  { id: "g5", image: "./Assets/mandapam_imag1.jpg", title: "Magical Mandapam Backdrop", category: "decor" },
   { id: "g6", image: "./Assets/food.jpg", title: "Delectable Buffet Reception", category: "decor" },
   { id: "g7", image: "./Assets/mandapam_imag1.jpg", title: "Royal Entry Layout", category: "decor" },
   { id: "g8", image: "./Assets/place.jpg", title: "Historic Castle Venue Setup", category: "decor" },
@@ -57,7 +48,6 @@ const SEED_GALLERY = [
   { id: "g10", image: "./Assets/img2.jpg", title: "Beautiful Arch Entrance", category: "decor" },
   { id: "g11", image: "./Assets/grooms.jpg", title: "Royal Navy Blue Groom Suit", category: "suits" },
   { id: "g12", image: "./Assets/dressing.jpeg", title: "Embroidered Gold Bridal Lace", category: "dresses" },
-  { id: "g13", image: "./Assets/car.jpg", title: "Classic Vintage Wedding Ride", category: "cars" },
   { id: "g14", image: "./Assets/rwanda_wedding_1.jpg", title: "Traditional Groom Escort", category: "suits" },
   { id: "g15", image: "./Assets/rwanda_wedding_2.jpg", title: "Groomsmen Traditional Procession", category: "suits" },
   { id: "g16", image: "./Assets/rwanda_wedding_3.jpg", title: "Traditional Bride & Groom Portrait", category: "dresses" },
@@ -100,16 +90,6 @@ const SEED_BLOGS = [
     mediaType: "image",
     mediaUrl: "./Assets/img2.jpg",
     date: "April 18, 2026"
-  },
-  {
-    id: "b4",
-    title: "Classic & Modern Wedding Car Guide",
-    category: "Wedding Cars",
-    snippet: "Arrive in style with vintage convertibles, clean modern limos, or premium luxury sports cars. Here is how to choose.",
-    content: "Your wedding car is not just transport—it is a huge part of your grand entry and your exit photos. Vintage cars add romance and classic elegance, perfect for formal and garden themes. Modern luxury cars like Mercedes-Benz or Range Rover offer comfort, state-of-the-art climate control, and smooth rides. Coordinate rental times carefully so the car arrives 15-20 minutes before schedule, allowing buffer room for pictures before the ceremony starts.",
-    mediaType: "video",
-    mediaUrl: "./Assets/cars.mp4",
-    date: "March 02, 2026"
   }
 ];
 
@@ -120,9 +100,9 @@ const SEED_BOOKINGS = [
     email: "alice@gmail.com",
     phone: "+250 788 123 456",
     date: "2026-07-20",
-    services: ["Bridal Dress Rental", "Bridal Makeup Service"],
+    services: ["Bridal Dress Rental"],
     total: 800,
-    requests: "Needs a long veil and gold-themed makeup trial.",
+    requests: "Needs a long veil.",
     status: "Confirmed"
   },
   {
@@ -131,7 +111,7 @@ const SEED_BOOKINGS = [
     email: "eric@outlook.com",
     phone: "+250 791 222 333",
     date: "2026-08-05",
-    services: ["Groom Suit Rental", "Luxury Wedding Cars", "Photography & Video"],
+    services: ["Groom Suit Rental", "Photography & Video"],
     total: 1900,
     requests: "Vintage black Rolls Royce preferred.",
     status: "Pending"
@@ -176,24 +156,65 @@ const SEED_MESSAGES = [
 (function initializeDatabase() {
   if (!localStorage.getItem("bbb_services")) {
     localStorage.setItem("bbb_services", JSON.stringify(SEED_SERVICES));
+  } else {
+    // Cleanup any services related to cars and replace makeup with cooking
+    let currentServices = JSON.parse(localStorage.getItem("bbb_services")) || [];
+    let filteredServices = currentServices.filter(s => s.id !== "s4" && !s.name.toLowerCase().includes("car"));
+    
+    let updated = false;
+    let makeupIndex = filteredServices.findIndex(s => s.id === "s6" || s.name.toLowerCase().includes("makeup"));
+    if (makeupIndex !== -1) {
+      filteredServices[makeupIndex] = {
+        id: "s6",
+        name: "Cooking in your wedding",
+        price: 800,
+        image: "./Assets/wedding_catering_food.jpg",
+        description: "Professional culinary preparation, gourmet catering setups, and customized reception menus crafted to delight your guests."
+      };
+      updated = true;
+    } else {
+      if (!filteredServices.some(s => s.id === "s6")) {
+        filteredServices.push({
+          id: "s6",
+          name: "Cooking in your wedding",
+          price: 800,
+          image: "./Assets/wedding_catering_food.jpg",
+          description: "Professional culinary preparation, gourmet catering setups, and customized reception menus crafted to delight your guests."
+        });
+        updated = true;
+      }
+    }
+    
+    if (updated || currentServices.length !== filteredServices.length) {
+      localStorage.setItem("bbb_services", JSON.stringify(filteredServices));
+    }
   }
   if (!localStorage.getItem("bbb_gallery")) {
     localStorage.setItem("bbb_gallery", JSON.stringify(SEED_GALLERY));
   } else {
     let currentGallery = JSON.parse(localStorage.getItem("bbb_gallery")) || [];
+    // Cleanup any gallery items related to cars
+    let filteredGallery = currentGallery.filter(item => item.id !== "g13" && item.id !== "g3" && item.category !== "cars" && !item.title.toLowerCase().includes("pre-wedding"));
     let updated = false;
     SEED_GALLERY.forEach(seedItem => {
-      if (!currentGallery.some(item => item.id === seedItem.id)) {
-        currentGallery.push(seedItem);
+      if (!filteredGallery.some(item => item.id === seedItem.id)) {
+        filteredGallery.push(seedItem);
         updated = true;
       }
     });
-    if (updated) {
-      localStorage.setItem("bbb_gallery", JSON.stringify(currentGallery));
+    if (updated || currentGallery.length !== filteredGallery.length) {
+      localStorage.setItem("bbb_gallery", JSON.stringify(filteredGallery));
     }
   }
   if (!localStorage.getItem("bbb_blogs")) {
     localStorage.setItem("bbb_blogs", JSON.stringify(SEED_BLOGS));
+  } else {
+    // Cleanup any blog posts related to cars
+    let currentBlogs = JSON.parse(localStorage.getItem("bbb_blogs")) || [];
+    let filteredBlogs = currentBlogs.filter(b => b.id !== "b4" && !b.category.toLowerCase().includes("car") && !b.title.toLowerCase().includes("car"));
+    if (currentBlogs.length !== filteredBlogs.length) {
+      localStorage.setItem("bbb_blogs", JSON.stringify(filteredBlogs));
+    }
   }
   if (!localStorage.getItem("bbb_bookings")) {
     localStorage.setItem("bbb_bookings", JSON.stringify(SEED_BOOKINGS));

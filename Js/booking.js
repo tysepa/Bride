@@ -19,6 +19,7 @@ if (currentUser) {
 }
 
 // Render Checkboxes
+
 if (materialsList && services.length > 0) {
   materialsList.innerHTML = services.map(s => `
     <div class="material-card" data-id="${s.id}">
