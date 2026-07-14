@@ -5,7 +5,6 @@ function toggleMenu(){
 // Fetch services from db
 const services = window.db.getServices() || [];
 const materialsList = document.getElementById("materialsList");
-const totalDisplay = document.getElementById("total");
 const bookingForm = document.getElementById("bookingForm");
 const confirmModal = document.getElementById("confirmModal");
 const bookingSummary = document.getElementById("bookingSummary");
@@ -25,7 +24,6 @@ if (materialsList && services.length > 0) {
     <div class="material-card" data-id="${s.id}">
       <input type="checkbox" id="check-${s.id}" value="${s.price}" data-name="${s.name}">
       <label class="material-card-label" for="check-${s.id}">${s.name}</label>
-      <div class="material-card-price">$${s.price}</div>
     </div>
   `).join("");
 
@@ -41,7 +39,6 @@ if (materialsList && services.length > 0) {
       } else {
         card.classList.remove("selected");
       }
-      calculateTotal();
     });
 
     // Make card background clickable as well
@@ -54,16 +51,7 @@ if (materialsList && services.length > 0) {
   });
 }
 
-function calculateTotal() {
-  let total = 0;
-  const checkboxes = document.querySelectorAll('.materials input[type="checkbox"]');
-  checkboxes.forEach(cb => {
-    if (cb.checked) {
-      total += parseInt(cb.value);
-    }
-  });
-  totalDisplay.textContent = total;
-}
+// Pricing will be discussed during consultation
 
 // Handle Form Submission
 bookingForm.addEventListener("submit", (e) => {
@@ -77,12 +65,10 @@ bookingForm.addEventListener("submit", (e) => {
 
   // Selected services
   const selectedServices = [];
-  let total = 0;
   const checkboxes = document.querySelectorAll('.materials input[type="checkbox"]');
   checkboxes.forEach(cb => {
     if (cb.checked) {
       selectedServices.push(cb.getAttribute("data-name"));
-      total += parseInt(cb.value);
     }
   });
 
@@ -98,7 +84,7 @@ bookingForm.addEventListener("submit", (e) => {
     phone,
     date,
     services: selectedServices,
-    total,
+    total: "Pending Discussion",
     requests,
     status: "Pending"
   };
@@ -125,8 +111,8 @@ bookingForm.addEventListener("submit", (e) => {
         <td>${savedBooking.services.join(", ")}</td>
       </tr>
       <tr>
-        <th>Total Price</th>
-        <td style="font-weight: 700; color: var(--dark);">$${savedBooking.total}</td>
+        <th>Pricing</th>
+        <td style="font-weight: 700; color: var(--primary);">${savedBooking.total}</td>
       </tr>
     </table>
   `;

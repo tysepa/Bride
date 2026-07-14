@@ -130,7 +130,7 @@ function loadOverviewStats() {
   let totalRevenue = 0;
   bookings.forEach(b => {
     if (b.status === "Confirmed" || b.status === "Completed") {
-      totalRevenue += parseInt(b.total || 0);
+      totalRevenue += parseInt(b.total) || 0;
     }
   });
 
@@ -156,7 +156,7 @@ function loadOverviewStats() {
       <td style="font-weight: 600; color: var(--primary);">${b.id}</td>
       <td>${b.name}</td>
       <td>${b.date}</td>
-      <td><strong>$${b.total}</strong></td>
+      <td><strong>${typeof b.total === 'number' || !isNaN(Number(b.total)) ? `$${b.total}` : b.total}</strong></td>
       <td><span class="status ${b.status.toLowerCase()}">${b.status}</span></td>
     </tr>
   `).join("");
@@ -182,7 +182,7 @@ function loadBookingsTable() {
       </td>
       <td>${b.date}</td>
       <td style="max-width: 200px; font-size: 13px;">${b.services.join(", ")}</td>
-      <td><strong>$${b.total}</strong></td>
+      <td><strong>${typeof b.total === 'number' || !isNaN(Number(b.total)) ? `$${b.total}` : b.total}</strong></td>
       <td><span class="status ${b.status.toLowerCase()}">${b.status}</span></td>
       <td>
         <div class="action-btns">
@@ -274,7 +274,7 @@ function saveBookingSubmit(e) {
   }
 
   const customTotalInput = document.getElementById("editBookTotal").value;
-  const total = customTotalInput ? parseInt(customTotalInput) : calculatedTotal;
+  const total = customTotalInput ? (isNaN(customTotalInput) ? customTotalInput : parseInt(customTotalInput)) : calculatedTotal;
 
   const bookingData = {
     name, email, phone, date, status, requests,
