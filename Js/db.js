@@ -57,7 +57,17 @@ const SEED_GALLERY = [
   { id: "g20", image: "./Assets/rwanda_wedding_7.jpg", title: "Golden Ochre Bridal Wrap Detail", category: "dresses" },
   { id: "g21", image: "./Assets/rwanda_wedding_8.jpg", title: "Vibrant Pink Floral Ceremonial Attire", category: "dresses" },
   { id: "g22", image: "./Assets/rwanda_wedding_9.jpg", title: "Miss to Mrs Bridal Shower & Outdoor Setup", category: "decor" },
-  { id: "g23", image: "./Assets/rwanda_wedding_10.jpg", title: "Emerald Green & Gold Traditional Couple", category: "dresses" }
+  { id: "g23", image: "./Assets/rwanda_wedding_10.jpg", title: "Emerald Green & Gold Traditional Couple", category: "dresses" },
+  { id: "g24", image: "./Assets/gallery_wedding_1.jpg", title: "Earthy Olive Groom & Bride Portrait", category: "suits" },
+  { id: "g25", image: "./Assets/gallery_wedding_2.jpg", title: "Double-breasted Black Tuxedo Details", category: "suits" },
+  { id: "g26", image: "./Assets/gallery_wedding_3.jpg", title: "Modern Tan Double-breasted Suit", category: "suits" },
+  { id: "g27", image: "./Assets/gallery_wedding_4.jpg", title: "Candid Ceremony Smiles", category: "suits" },
+  { id: "g28", image: "./Assets/gallery_wedding_5.jpg", title: "Garden Exit Couple Moment", category: "decor" },
+  { id: "g29", image: "./Assets/gallery_wedding_6.jpg", title: "Joyful Lift Ceremony Moment", category: "dresses" },
+  { id: "g30", image: "./Assets/gallery_wedding_7.jpg", title: "Painted Silk Umushanana Silhouette", category: "dresses" },
+  { id: "g31", image: "./Assets/gallery_wedding_8.jpg", title: "Splattered Green Traditional Bridal Gown", category: "dresses" },
+  { id: "g32", image: "./Assets/gallery_wedding_9.jpg", title: "Golden Arch Floral Stage Design", category: "decor" },
+  { id: "g33", image: "./Assets/gallery_wedding_10.jpg", title: "Lush Ivory Backdrop Arrangement", category: "decor" }
 ];
 
 const SEED_BLOGS = [
@@ -72,24 +82,41 @@ const SEED_BLOGS = [
     date: "June 10, 2026"
   },
   {
-    id: "b2",
-    title: "Romantic Outdoor Wedding Ceremony Tips",
-    category: "Wedding Video",
-    snippet: "Watch our walkthrough of a romantic outdoor forest wedding ceremony layout and pick elements for your wedding day.",
-    content: "Outdoor weddings offer breathtaking backdrops, but they also bring challenges like weather shifts, outdoor acoustics, and lighting changes. Always have a backup plan (like a luxury tent or indoor hall). Ensure guests are comfortable by offering hydration stations, fans, or blankets. Check local permits for sound systems and layout restrictions. When styling outdoor decor, stick to stable structures and flowers that don't wilt quickly in hot sun. Check out our video walkthrough to see a gorgeous forest ceremony layout in action.",
-    mediaType: "video",
-    mediaUrl: "./Assets/1video.mp4",
-    date: "May 24, 2026"
-  },
-  {
     id: "b3",
     title: "Elegant Table & Arch Decoration Ideas",
     category: "Decoration",
     snippet: "Create magical wedding environments with stunning floral designs, warm fairy lights, and gold table setups.",
     content: "The tables and backdrops set the vibe for the entire reception. This season, gold accents, ivory candles, and lush eucalyptus leaves are leading the design trends. Focus on heights—mix tall floral centerpieces with short, glowing tea lights to add dimension. Backdrops with circular arches decorated with white roses and pampas grass create beautiful framing for photos. Always verify that decorations don't block the visual line of guests trying to converse across tables.",
+  },
+  {
+    id: "b4",
+    title: "Captured Love: Creative Couple Wedding Poses",
+    category: "Bridal Tips",
+    snippet: "From romantic lifts to candid walks, discover the best couples' photography poses to make your memories last forever.",
+    content: "A wedding photography session is all about capturing the genuine connection and romance between the couple. One of the most classic and energetic poses is the lifting pose, where the groom carries the bride in a joyful embrace on a grassy field. It displays pure excitement, movement, and love. To achieve this look, ensure your photographer uses a fast shutter speed to capture the action cleanly, and keep your smiles natural and relaxed. Other poses include hand-holding walks, close-up glances, and soft forehead kisses.",
     mediaType: "image",
-    mediaUrl: "./Assets/img2.jpg",
-    date: "April 18, 2026"
+    mediaUrl: "./Assets/blog_wedding_1.jpg",
+    date: "July 12, 2026"
+  },
+  {
+    id: "b5",
+    title: "Styling the Traditional Umushanana Gown",
+    category: "Bridal Tips",
+    snippet: "Learn how to select and style the elegant Rwandan traditional bridal attire for your introduction or wedding ceremony.",
+    content: "The Umushanana is a highly respected and stunningly beautiful traditional attire in Rwanda, characterized by a sash draped over one shoulder and a matching wrapper skirt. Today's brides combine this rich cultural legacy with modern luxury, choosing ivory and white silken fabrics detailed with intricate beadwork and sparkling headbands. When styling the Umushanana, opt for minimal but striking accessories such as gold arm cuffs, drop earrings, and a matching clutch bag. Ensure the draping is smooth and the fabric flows elegantly as you walk.",
+    mediaType: "image",
+    mediaUrl: "./Assets/blog_wedding_2.jpg",
+    date: "July 05, 2026"
+  },
+  {
+    id: "b6",
+    title: "Groom Fashion: Styling the Perfect Wedding Suit",
+    category: "Bridal Tips",
+    snippet: "Step away from standard black with premium olive-brown double-breasted suits for a modern, sophisticated wedding style.",
+    content: "Modern wedding fashion for grooms has evolved significantly beyond the basic black tuxedo. Olive-brown and earthy-green double-breasted suits are trending as a highly sophisticated choice for garden and outdoor weddings. Combined with a clean white shirt, a striped tie, and a matching pocket square, this color palette feels fresh, elegant, and matches the natural setting perfectly. Ensure the suit is tailored precisely to your measurements, and pair it with quality leather dress shoes to complete the premium look.",
+    mediaType: "image",
+    mediaUrl: "./Assets/blog_wedding_3.jpg",
+    date: "June 28, 2026"
   }
 ];
 
@@ -209,10 +236,18 @@ const SEED_MESSAGES = [
   if (!localStorage.getItem("bbb_blogs")) {
     localStorage.setItem("bbb_blogs", JSON.stringify(SEED_BLOGS));
   } else {
-    // Cleanup any blog posts related to cars
+    // Cleanup any blog posts related to cars and sync new blogs
     let currentBlogs = JSON.parse(localStorage.getItem("bbb_blogs")) || [];
-    let filteredBlogs = currentBlogs.filter(b => b.id !== "b4" && !b.category.toLowerCase().includes("car") && !b.title.toLowerCase().includes("car"));
-    if (currentBlogs.length !== filteredBlogs.length) {
+    let filteredBlogs = currentBlogs.filter(b => b.id !== "b4_old" && b.id !== "b2" && b.category !== "Wedding Video" && !b.category.toLowerCase().includes("car") && !b.title.toLowerCase().includes("car"));
+    
+    let updated = false;
+    SEED_BLOGS.forEach(seedItem => {
+      if (!filteredBlogs.some(b => b.id === seedItem.id)) {
+        filteredBlogs.push(seedItem);
+        updated = true;
+      }
+    });
+    if (updated || currentBlogs.length !== filteredBlogs.length) {
       localStorage.setItem("bbb_blogs", JSON.stringify(filteredBlogs));
     }
   }
